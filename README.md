@@ -97,6 +97,7 @@ a revenue sharing scheme is created by members.
 
 Following sections review the scope of smart contracts, what can be currently leveraged, what needs to be built atop in the context of
 Web Monetization and this grant. They focus on the concept of shares, rights to be selected as a payment receiver for a given revenue stream.
+Shares can be staked on payments pointers by owners to rise their chance of being selected for each and every subsequent payment.
 
 Those smart contracts:
 
@@ -110,10 +111,15 @@ streams without much technical abilities, computational power, or prior blockcha
 
 Shares can be conceptualized as fungible tokens, a common notion found in many decentralized networks. Each share represents the likelihood
 of being selected as payment receiver when a payment stream is initiated in the context of a specific revenue stream. In Convex Lisp, a fungible
-token can be created in a couple of lines. For the sake of simplicity, let us suppose that an initial founder mints 100 shares, meaning each share
-represents a 1% chance of being selected:
+token can be created in a couple of lines.
+
+Let us suppose that Alice is the original founder. For the sake of simplicity, 100 shares are minted where each share represents a 1% chance
+of being selected as payment receiver for any given payment:
 
 ```clojure
+;; L
+
+
 (import convex.fungible :as fun)
 
 (def shares
@@ -122,17 +128,17 @@ represents a 1% chance of being selected:
 ```
 
 In Convex, fungible tokens are components of a much broader asset abstraction, a common interface allowing to easily manage assets of any kind.
-Shares are readily transferable to new members. Supposing share recipient is account `#42` and founder wants to transfer 20 shares:
+Shares are readily transferable to new members. Supposing Bob owns account `#50` and Alice wants to transfer 40 shares:
 
 ```clojure
 (import convex.asset :as asset)
 
-(asset/transfer #42
-                [shares 20])
+(asset/transfer #50
+                [shares 40])
 ```
 
-From now on, founder onws 80 shares, providing a 80% chance of being selected as payment receiver, while account `#42` owns 20 shares, providing
-a 20% chance of being selected.
+From now on, Alice owns 60 shares, providing a 60% chance of being selected as payment receiver, while Bob owns the remaining 40 shares, providing
+a 40% chance.
 
 Just like any aspect of the Convex stack, Convex Lisp libraries are [open-source](https://github.com/Convex-Dev/convex/tree/master/convex-core/src/main/cvx/convex)
 and developed in the interest of the public in a non-competitive way. Even on the Convex network, users are free to implement other schemes. However,
@@ -140,7 +146,38 @@ the asset framework provided by the Convex Foundation aims to provide interopera
 users keep the freedom to transfer and trade them as desired.
 
 
-## Share governance "à la carte"
+## Staking shares on payments pointers
+
+Any share owner is free to stake shares on any payment pointer. For instance, a content creator benefiting from a monetized platform  would most
+likely stake owned shares on a personal wallet. Nothing prevents a share owner from staking shares on several payment pointers at the same time, such
+as a personal wallet as well as the wallet of a family member. This simple mechanism allows anyone to direct any percentage of revenue without
+transferring shares, as desired and for as long as required.
+
+A materialized view must be maintained to represent how shares are distributed by owners, mappings of payments pointers to accumulated shares:
+
+```clojure
+(def payment-pointers
+     {"$wallet.com/alice" 60
+      "$wallet.com/bob"   25
+      "$wallet.com/foo"   15})
+```
+
+In parallel, the system must track how each owner stakes shares. Convex provides a more sophisticated method for doing so via its holdings abstraction.
+However, it can be conceptualized as a mapping of owner accounts to mappings of payment pointers to allocated shares:
+
+```clojure
+;; Where Alice owns account #20 and Bob account #50.
+;;
+(def stakes
+     {#20 {"$wallet.com/alice" 60}
+      #50 {"$wallet.com/bob"   25
+           "$wcallet.com/foo"  15}})
+```
+
+Both requirements will be implemented in the scope of the fungible token implementation underlying shares.
+
+
+## Governance "à la carte"
 
 While creating shares is straightforward, new questions appear, such as:
 
