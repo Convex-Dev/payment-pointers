@@ -391,6 +391,20 @@ up a revenue stream for a new content creator on a news platform would incur one
 uses the indirect payment pointer on all published articles.
 
 
+## Previous work
+
+Out of repositories related to Interledger and Web Monetization found on Github, only a few mention payment pointers. Among this very limited set, only 3
+attempted to provide utilities for managing them. However, they are very incomplete, unmaintained, and did not seem to attempt going beyond the simple probabilistic
+revenue sharing exposed in the Web Monetization documentation.
+
+In contrast, building on the in-depth analysis elaborated by this document, we hope to provide novel insights strenghtening the financial resiliency of users
+while leading to novel and viable business models.
+
+https://github.com/signalnerve/openmonetizationwallet
+https://github.com/Vivid-IOV-Labs/revenue-share-smart-contract
+https://github.com/Vivid-IOV-Labs/revenue-share-smart-contract
+
+
 ## License
 
 Copyright © 2021 Adam Helinski, the Convex Foundation, and contributors
