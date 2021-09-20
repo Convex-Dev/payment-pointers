@@ -264,6 +264,38 @@ built on the basis of implementing complex financial instruments. Quite the oppo
 behavior by design, with the clear intent of providing resiliciency and not burden.
 
 
+## Performance analysis
+
+Some performance gains can be attributed to avoiding network delays, such as outlined in the section about recursive payment pointers. This section
+outlines the generic performance characteristics of the Convex network in the context of Web Monetization. A similar analysis can be applied to
+other decentralized networks.
+
+When discussing the performance any system, a distinction if often made between:
+
+- Read operations which usually bear a low computational cost
+- Write operations which usually bear a much higher computational cost
+
+Similarly, on the Convex network and comparables networks, a distinction myst be made between:
+
+- Queries which access data and compute a result, akin to read operations
+- Transactions which alter network state, akin to write operations
+
+Queries present a particularly high performance profile since they do not require any consensus between network peers. They scale horizontally with
+the network: as the network grows, queries tend to become faster, akin to a [Content Delivery Network](https://en.wikipedia.org/wiki/Content_delivery_network).
+In contrast, transactions require consensus between peers, adding delays and incurring a series of computationally expensive cryptographic operations.
+
+Such charactericts for such systems are common. However, in the context of Web Monetization, this performance profile is suited. Indeed, transactions
+required for creating shares, transferring them, or managing them in any way, will seldom happen. The vast majority of operations, to
+an overwhelming extent, will be mere queries when consumers start streaming payments and selection process occurs. The fact that the selection process
+is effectively stateless is a fundamental proof this project is scalable in spite of relying on blockchain technology. **This allows us to reap the obvious
+benefits of a decentralized solution, as described in this document, while approaching the performance of a centralized solution.**
+
+Furthermore, even in the case of transactions, the Convex technological stack introduces a series of innovations described in greater detail in the
+[White Paper](https://raw.githubusercontent.com/Convex-Dev/design/main/papers/convex-whitepaper.pdf). Due to an overall reduced computational cost, current
+benchmarks peek at 100,000 transactions per second where a transaction represents an average series of operations. Under such projections, computation induced
+by anecdotic transactions becomes negligeable.
+
+
 ## License
 
 Copyright © 2021 Adam Helinski, the Convex Foundation, and contributors
