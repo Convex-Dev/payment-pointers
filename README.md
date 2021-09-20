@@ -91,9 +91,9 @@ developed in this repository. On the other hand, the key differenciating factors
 met in other decentralized technologies. Hence, it is an opportunity to work on a portable solution while exploring new ventures.
 
 The benefits of describing revenue sharing agreements *"on chain"* is twofold. First, the state of the network is securely replicated
-world-wide in a trustless manner, meaning no party can tamper with agreements. Second, smart contracts enforce revenue sharing rules
-automatically in an indisputable way. Rules, just like the possible evolution of those rules, are clearly defined in code the moment
-a revenue sharing scheme is created by members.
+world-wide in a trustless manner, meaning no party can tamper with agreements. Second, agreements are written as smart contracts which
+enforce revenue sharing rules automatically in an indisputable way. Rules, just like the possible evolution of those rules, are clearly defined
+in code the moment a revenue sharing scheme is created by members.
 
 Following sections review the scope of smart contracts, what can be currently leveraged, what needs to be built atop in the context of
 Web Monetization and this grant. They focus on the concept of shares, rights to be selected as a payment receiver for a given revenue stream.
@@ -134,13 +134,19 @@ Shares are readily transferable to new members. Supposing Bob owns account `#50`
                 [shares 40])
 ```
 
-From now on, Alice owns 60 shares, providing a 60% chance of being selected as payment receiver, while Bob owns the remaining 40 shares, providing
-a 40% chance.
+From now on, Alice owns 60 shares, providing her a 60% chance of being selected as payment receiver, while Bob owns the remaining 40 shares,
+providing him a 40% chance.
+
+Concretely, the value of `shares` is the number of a newly created automated account. An automated account is not managed by any user, it only
+hosts smart contracts which in this case describe how shares are managed. Shares cannot be managed in any other form nor under any other circumstances
+but by those described in smart contracts.
 
 Just like any aspect of the Convex stack, Convex Lisp libraries are [open-source](https://github.com/Convex-Dev/convex/tree/master/convex-core/src/main/cvx/convex)
 and developed in the interest of the public in a non-competitive way. Even on the Convex network, users are free to implement other schemes. However,
 the asset framework provided by the Convex Foundation aims to provide interoperability between diffent kind of digital assets on the network so that
-users keep the freedom to transfer and trade them as desired.
+users have the ability to transfer and trade them as desired.
+
+A more complete example, albeit non-exhaustive, is available at [this link](https://convex.world/examples/fungible-token).
 
 
 ## Staking shares on payments pointers
@@ -196,6 +202,39 @@ strong random value:
 Since it is effectively payers that will ultimately query for payment pointers, inducing the selection process, shares owner have no practical
 way of biasing the random number generation in a particular direction. Additionally, an off-chain parameter can be provided externally when querying
 for the next payment pointer, although this idea requires some careful considerations.
+
+
+## Recursive payment pointers
+
+For the sake of clarity, let us agree that **direct payment pointers** resolve directly to wallets whereas **indirect payment pointers** resolve to
+a selection process. It follows that payment pointer are recursive: a selection process could itself resolve to another indirect payment pointer,
+leading to another selection process, and so on.
+
+This property is highly desirable. It provides share owners the ability to setup their own additional selection process without requiring permission
+from anyone else. For instance, as a founder, Alice might agree to transfer 50% of total shares to a pool of investors represented by an indirect
+payment pointer, in exchange for help in building her monetized platform. Alice would keep the freedom to manage her 50% of shares as desired, investors
+would keep their freedom to manage their 50% of shares as desired, without requiring any further involvement.
+
+While elegant and resiliient, this kind of recursion has a pratical performance cost. Resolving any additional payment pointer is effectively
+an extra HTTP indirection, adding latency, causing exclusive content to be delayed, and ultimately driving monetization down.
+
+This performance problem can be solved by eliminating the need for those HTTP redirections. In the following example, 50 shares are staked on Alice's
+payment pointer (most likely her personal wallet) while 50 shares are staked on account `#510`, another automated account used by investors to manage
+their 50% of shares between them:
+
+```clojure
+(def payment-pointers
+     {"$wallet.com/alice" 50
+      #510                50})
+```
+
+Now, for any new payment, either the selection process resolves to Alice's payment pointer which is returned immediately, either it resolves to that
+other account and another round of selection is performed on that account. Unlike HTTP redirections which requires resolving a new URL and calling
+an additional service, everything happens in one query without changing environments, which is bound to be much faster.
+
+This significant gain in performance allows imagining arbitrarily complex chains of royalties. It promotes fair revenue sharing where monetized content
+can redirect part of revenue to other monetized content it is built on (eg. `news platform members` -> `news article author` -> `photographer's picture`).
+Naturally, this is an optimization users may choose to leverage or not, keeping the freedom of choosing any other redirection method.
 
 
 ## Governance "à la carte"
