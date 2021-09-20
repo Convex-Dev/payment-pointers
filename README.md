@@ -109,7 +109,7 @@ streams without much technical abilities, computational power, or prior blockcha
 
 ## Creating and transferring shares
 
-Shares can be conceptualized as fungible tokens, a common notion found in many decentralized networks. Each share represents the likelihood
+Shares can be conceptualized as fungible tokens, a common notion found in many decentralized networks. Each share represents a likelihood
 of being selected as payment receiver when a payment stream is initiated in the context of a specific revenue stream. In Convex Lisp, a fungible
 token can be created in a couple of lines.
 
@@ -237,6 +237,32 @@ can redirect part of revenue to other monetized content it is built on (eg. `new
 Naturally, this is an optimization users may choose to leverage or not, keeping the freedom of choosing any other redirection method.
 
 
+## Privacy and fair behavior
+
+Previous sections outlined the fact that a payment receiver, in order to take part in a revenue sharing stream, must disclose 2 kinds of information:
+
+- An account number for receiving and exchanging shares
+- How shares are stake on payment pointers of choice by that account number
+
+Payments pointers have been designed to provide a reasonable level of privacy, They are effectively considered public. Accounts on the Convex network
+lean towards anonymity since, unlike in other decentralized networks, they are not strictly bound to a key pair. If the owner of an account is supposedly
+uncovered, replacing the public key associated with that account is enough to cast doubt upon who really owns that particular account. Naturally, when
+Bob provides an account number to Alice in order to receive shares, Alice might rightfully deduce that Bob is the owner of that account. In reality,
+this is not necessarily true and if it is, will not necessarily hold true in the future.
+
+Given those statements, given that in any other form of arragement Bob would have most likely divulge more information to Alice anyways, this project
+respects the privacy boundaries promoted by Interledger. However, the fact that share allocations is effectively public deserves more thought.
+
+While under some circumstances it might not be desirable publicly disclosing which accounts own shares and how they are stacked, it is arguably desirable
+under most circumstances. Indeed, from the point of view of payment receivers, it arguably promotes fair agreements. For instance, it allows a content
+creator to ensure that receveived shares, when joining a platform, are fair compared to what other creators have received.
+
+Consumers can quickly and easily verify how their payment streams benefit content creator. If content creators hosting their work on a shared
+platform end up receiving an unfair percentage of the revenue stream they helped create, consumers would have the ability to take notice and put pressure
+on the platform towards a fairer treatment. While extensions exist for tracking payment streams, those only offer insights after a period of consumption,
+not an instanteneous overview.
+
+
 ## Governance "à la carte"
 
 While creating shares is straightforward, new questions appear, such as:
@@ -301,7 +327,7 @@ by anecdotic transactions becomes negligeable.
 Naturally, at least to some extent, cost is correlated with the performance profile of the system. This section builds on the previous section
 in order to provide an understanding of the cost that will be incurred on the end users, such as content creators and content consumers.
 
-From the point of view of content consumers, queries for selection process or reading any other data are virtually free of charge. As outlined in the previous
+From the point of view of content consumers, queries for selecting payment pointers or reading any other data are virtually free of charge. As outlined in the previous
 section, queries do not require consensus and present the same kind of performance profile that content delivery networks do. Hence, they are
 effectively *"off-chain"* and do not incur any fees *"on-chain"*. Queries are a facility provided by peer operators at their discretion. For instance,
 the Convex Foundation runs a peer that serves queries completely free of charge. Furthermore, the whole technological stack is open-source and the
@@ -323,7 +349,7 @@ adjusted accordingly to network congestion so that operations become more expens
 the token price. For instance, we could say at a given point that *"1 juice unit costs 4 Convex Coins"*. Ultimately, the token is expressed in USD
 per billion coins and is itself subject to market speculation.
 
-Under such complex relationships, it is vital to demonstrate that any fees incurred are negligeable even under worst case scenarios projected on
+Under such complex relationships, it is vital to demonstrate that any fees incurred are sensible even under worst case scenarios projected on
 those parameters.
 
 Two canonical examples are detailed:
@@ -356,8 +382,8 @@ Share creation = 156,020 * 3,096.26 / 1e9 * 50 = 9.66 USD
 Share transfer =   3.195 * 3.096.26 / 1e9 * 50 = 0.2  USD
 ```
 
-Under foreseen projections, sporadic transaction costs incurred on payment receivers when setting up and managing revenue sharing is negligeable. As a matter
-of fact, sharing can be highly granular. For instance, creating a dedicated revenue sharing even for a single news article becomes interesting unless the consumer base is
+Under foreseen projections, sporadic transaction costs incurred on payment receivers when setting up and managing revenue sharing are negligeable. As a matter
+of fact, sharing can be highly granular. For instance, creating a dedicated revenue sharing stream even for a single news article becomes interesting unless the consumer base is
 exceptionnally small. As a comparison, [Coil](https://coil.com) currently streams payments at a rate of 0.36 USD per hour.
 
 Even when projecting the absolute worst case scenario, which in reality has no legitimate basis to be predicted, transaction fees remain acceptable. For instance, setting
