@@ -31,18 +31,50 @@ To guarantee openness and reusability, proposed stack must also obey those gener
 - Remain itself fully open-source, from documentation to implentation
 - Achievable under current technical possibilities
 - Core features must strive to be portable and documented to allow so
-- Based on elements from the Interledger protocol
+- Core design directly based on elements from the Interledger protocol
 
 The solution outlined in this repository is best suited for the nascent [Web Monetization API](https://webmonetization.org) allowing
-browser users to stream payments to accounts identified by URLs. On a very high-level, it builds on the concept of
-[probabilistic revenue sharing](https://webmonetization.org/docs/probabilistic-rev-sharing) and proofs that an initially simple idea
-can be magnified to provide novel opportunities.
+browser users to stream payments to wallets identified by URLs. On a very high-level, it builds on the concept of
+[probabilistic revenue sharing](https://webmonetization.org/docs/probabilistic-rev-sharing) and proves that an initially simple idea
+can be magnified to unforeseen opportunities.
 
 
 ## Current status
 
 A proposal will been submitted to [Grant For The Web](https://www.grantfortheweb.org/) on September 22nd for the
 July 2021 round.
+
+
+## Trustless probabilistic revenue sharing
+
+Wallets are identified by [payments pointers](https://paymentpointers.org), URLs that resolves to HTTP payment endpoints. Given
+that services and APIs such as the Web Monetization expect a single payment pointer, there is an obvious need for implementing a robust
+revenue sharing solution. Allowing individual to form partnerships is a crucial factor for ensuring the future of Interledger
+and Web Monetization, [as discussed in this article](https://yiibu.github.io/web-monetization).
+
+The very basis of this work is [probabilistic revenue sharing](https://webmonetization.org/docs/probabilistic-rev-sharing). Given a list
+of payments pointers sharing revenue from a stream, a weighted random selection process guarantees that revenue for each payment pointer
+will approach what was agreed upon. If Alice should receive 60% of a revenue stream while Bob should receive 40%, applying a random selection
+where Alice has a 60% chance of being selected for any given payment is a straightforward method ensuring that revenue is shared as intended.
+This statement becomes quickly accurate as the number of payments grows.
+
+However, **how can the selection process be guaranteed to be fair, beyond any doubt?** Any agreement is as strong or as weak as the trust
+in the enforcement of that agreement is. Given the openess and world-wide reach of Interledger, any solution must suit grey regulatory areas
+and allow building constructive economic relationship even when members have not yet developed trust. As outlined in
+[this article](https://www.fairpayzone.com/2021/04/web-monetization-and-payments-meet.html), lack of trust between parties is commonly
+expected at the start of an economic relationship. Promoting a cycle of fair exchanges build the trust capital that is necessary to
+strengthen the relationship towards mutual benefits.
+
+It follows that any revenue sharing solution in this context should be trustless from a technological point of view so that parties involved
+have a sane basis for building trust from a human point of view. To achieve this requirement, this project aims to provide a solution based
+on blockchain technology. A series of guidelines and technical implementation exposed in this document aims to ensure that the solution:
+
+- Remains financially inclusive in spite of the speculative and volatile nature of blockchain
+- Incur fees that are sensible given the context of Web Monetization
+- Ensure high performance since any delay in content delivery tend to reduce monetization
+- Promote openness, preserving the freedom to leave the platform
+- Do not require users to divulge more private information than payment pointers
+- Promote fair revenue sharing governance by design
 
 
 ## License
