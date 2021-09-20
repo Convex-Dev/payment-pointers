@@ -117,9 +117,6 @@ Let us suppose that Alice is the original founder. For the sake of simplicity, 1
 of being selected as payment receiver for any given payment:
 
 ```clojure
-;; L
-
-
 (import convex.fungible :as fun)
 
 (def shares
@@ -175,6 +172,30 @@ However, it can be conceptualized as a mapping of owner accounts to mappings of 
 ```
 
 Both requirements will be implemented in the scope of the fungible token implementation underlying shares.
+
+
+## Stochastic selection process
+
+Given a materialized view tracking global share allocations on payment pointers, as described in the previous section, selecting a payment pointer
+randomly is straightforward given that a random number is available.
+
+Blockchains are designed to be fully deterministic since different machines must compute transactions in the exact same way, resulting in the exact
+same result. This is why a typical `rand` function, so common in programming languages, is not provided. Solutions usually combine
+different informations available on chain which are considered difficult to predict, hence acting as a sufficient sources of randomness.
+
+On Convex, following parameters can be chosen and mixed, especially under the assumption that the selection process does not require a particularly
+strong random value:
+
+- Current timestamp in milliseconds
+- Current juice price (computational cost weighted by network congestion)
+- Current memory size of network state
+- Number of registered peers
+- Number of accounts
+- Number of scheduled transactions
+
+Since it is effectively payers that will ultimately query for payment pointers, inducing the selection process, shares owner have no practical
+way of biasing the random number generation in a particular direction. Additionally, an off-chain parameter can be provided externally when querying
+for the next payment pointer, although this idea requires some careful considerations.
 
 
 ## Governance "à la carte"
