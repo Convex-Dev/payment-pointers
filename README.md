@@ -63,18 +63,102 @@ in the enforcement of that agreement is. Given the openess and world-wide reach 
 and allow building constructive economic relationship even when members have not yet developed trust. As outlined in
 [this article](https://www.fairpayzone.com/2021/04/web-monetization-and-payments-meet.html), lack of trust between parties is commonly
 expected at the start of an economic relationship. Promoting a cycle of fair exchanges build the trust capital that is necessary to
-strengthen the relationship towards mutual benefits.
+strengthen relationships towards mutual benefits.
 
 It follows that any revenue sharing solution in this context should be trustless from a technological point of view so that parties involved
 have a sane basis for building trust from a human point of view. To achieve this requirement, this project aims to provide a solution based
-on blockchain technology. A series of guidelines and technical implementation exposed in this document aims to ensure that the solution:
+on blockchain technology. A series of guidelines exposed in this document aims to ensure that the solution:
 
 - Remains financially inclusive in spite of the speculative and volatile nature of blockchain
-- Incur fees that are sensible given the context of Web Monetization
+- Incur predicatble fees that are provably sensible given the context of Web Monetization
 - Ensure high performance since any delay in content delivery tend to reduce monetization
-- Promote openness, preserving the freedom to leave the platform
+- Never handle any money in any form, merely handles the selection process
+- Do not put pressure on using a particular currency
+- Does not lock users in
+- Promote openness, is not meant to be a mandatory solution
 - Do not require users to divulge more private information than payment pointers
 - Promote fair revenue sharing governance by design
+
+The [Convex network](https://convex.world) has been chosen as a platform of choice for this project. The following sections provide detail
+as to how those guildines will be respected and how the set goals will be achieved.
+
+
+## Share-based governance
+
+Convex Lisp is a programming language providing a unique [smart contract framework](https://convex.world/cvm). On one hand, this framework
+is Turing-complete and any other Turing-complete networks with common smart contract capabilities will be able to replicate the solutions
+developed in this repository. On the other hand, the key differenciating factors behind Convex Lisp provide additional guarantees typically not
+met in other decentralized technologies. Hence, it is an opportunity to work on a portable solution while exploring new ventures.
+
+The benefits of describing revenue sharing agreements *"on chain"* is twofold. First, the state of the network is securely replicated
+world-wide in a trustless manner, meaning no party can tamper with agreements. Second, smart contracts enforce revenue sharing rules
+automatically in an indisputable way. Rules, just like the possible evolution of those rules, are clearly defined in code the moment
+a revenue sharing scheme is created by members.
+
+Following sections review the scope of smart contracts, what can be currently leveraged, what needs to be built atop in the context of
+Web Monetization and this grant. They focus on the concept of shares, rights to be selected as a payment receiver for a given revenue stream.
+
+Those smart contracts:
+
+- Will be portable to other networks with similar capabilities
+- Will remain open for peer-review and reusability, with the freedom to modify them as desired
+- Will set the foundations for building a web UI ; in a matter of clicks, users will have the ability to create and manage revenue sharing
+streams without much technical abilities, computational power, or prior blockchain knowledge
+
+
+## Creating and transferring shares
+
+Shares can be conceptualized as fungible tokens, a common notion found in many decentralized networks. Each share represents the likelihood
+of being selected as payment receiver when a payment stream is initiated in the context of a specific revenue stream. In Convex Lisp, a fungible
+token can be created in a couple of lines. For the sake of simplicity, let us suppose that an initial founder mints 100 shares, meaning each share
+represents a 1% chance of being selected:
+
+```clojure
+(import convex.fungible :as fun)
+
+(def shares
+     (deploy (fun/build-token {:initial-holder *address*
+                               :supply         100})))
+```
+
+In Convex, fungible tokens are components of a much broader asset abstraction, a common interface allowing to easily manage assets of any kind.
+Shares are readily transferable to new members. Supposing share recipient is account `#42` and founder wants to transfer 20 shares:
+
+```clojure
+(import convex.asset :as asset)
+
+(asset/transfer #42
+                [shares 20])
+```
+
+From now on, founder onws 80 shares, providing a 80% chance of being selected as payment receiver, while account `#42` owns 20 shares, providing
+a 20% chance of being selected.
+
+Just like any aspect of the Convex stack, Convex Lisp libraries are [open-source](https://github.com/Convex-Dev/convex/tree/master/convex-core/src/main/cvx/convex)
+and developed in the interest of the public in a non-competitive way. Even on the Convex network, users are free to implement other schemes. However,
+the asset framework provided by the Convex Foundation aims to provide interoperability between diffent kind of digital assets on the network so that
+users keep the freedom to transfer and trade them as desired.
+
+
+## Share governance "à la carte"
+
+While creating shares is straightforward, new questions appear, such as:
+
+- Should shares be always transferrable?
+- Should there be a member selection process first, allowing transfers only to current members?
+- If so, should there be a member eviction mechanism?
+- Should shares be transferrable only between members of a group or with outsiders as well?
+- How can additional shares be minted, if required?
+
+Not only are there no unique answers to such questions, group requirements are expected to evolve over time. Part of those answers resides
+in the implementation of shares. Current implementation of fungible tokens can be readily augmented to put arbitrary restrictions on transfers
+since such capabilities are part of the broader asset framework.
+
+More complex governance issues, such as membership restrictions, are commonly discussed and prototyped in the context of DAOs (Decentralized
+Autonomous Organizations, groups governed on a blockchain network). However, DAOs are usually much broader in scope and much more abstract regarding the aspects
+they are set to manage. In contrast, this project is well-scoped to the context of revenue sharing and governance issues specific to that matter.
+Hence, the many resources already existing in the space of DAOs, such as voting mechanisms, can be readily selected and improved within the specific
+requirements of the project.
 
 
 ## License
