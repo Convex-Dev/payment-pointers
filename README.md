@@ -28,7 +28,7 @@ Proposed stack must also follow the key principles behind the Interledger ecosys
 To guarantee openness and reusability, proposed stack must also obey those generic principles:
 
 - Use only open-source technologies with permissive licenses
-- Remain itself fully open-source, from documentation to implentation
+- Remain itself fully open-source, from documentation to implementation
 - Achievable under current technical possibilities
 - Core features must strive to be portable and documented to allow so
 - Core design directly based on elements from the Interledger protocol
@@ -70,7 +70,7 @@ have a sane basis for building trust from a human point of view. To achieve this
 on blockchain technology. A series of guidelines exposed in this document aims to ensure that the solution:
 
 - Remains financially inclusive in spite of the speculative and volatile nature of blockchain
-- Incur predicatble fees that are provably sensible given the context of Web Monetization
+- Incur predictable fees that are provably sensible given the context of Web Monetization
 - Ensure high performance since any delay in content delivery tend to reduce monetization
 - Never handle any money in any form, merely handles the selection process
 - Do not put pressure on using a particular currency
@@ -363,7 +363,6 @@ without any further optimization:
 ```
 Share creation = 156.020 juice units
 Share transfer =   3,195 juice units
-
 ```
 
 Two scenarios are modeled, mimicking common networks as of today (2021/09/20).
@@ -391,6 +390,25 @@ up a revenue stream for a new content creator on a news platform would incur one
 uses the indirect payment pointer on all published articles.
 
 
+## Viable business model
+
+Up to this point, careful analysis was applied to study if the insigts exposed in this document where financially beneficial to users, promoted fair economic
+relationships, and offered new ventures. Previous section about cost analysis demonstrated that cost was on average negligeable for payments receivers and hinted
+at the idea that payment senders could benefit from this system free of charge. This is because peer operators have the straightforward ability to collect tiny
+fees via Web Monetization itself.
+
+This is fair and sensible. Indeed, a payment receiver monetizes content via an indirect payment pointer that leads to the well-described probabilistic selection process.
+From the point of view of a peer, it is the payment sender who triggers the selection process when accessing monetized content, and this incurs on the peer the tangible
+*"off-chain"* cost of running the query that performs the selection. In order to cover expenses and possibly generate additional revenue for the added value it
+provides, the peer needs to displace the financial burden received by the sender onto the receiver that benefit from this. In other words, payment
+receivers must agree that a tiny but sufficient percentage of their revenue is redirected towards the payment pointer of the peer operator. This effectively closes the
+loop as every party involved make use of Web Monetization in a self-sustaining cycle.
+
+How those off-chain fees should be governed remains to be prototyped. Most likely, fees will take into account the computational cost of the selection process.
+Given that payment receivers control which peer will handle the selection process, it is likely that peers will compete in terms of quality of service and price
+just like connnector nodes from the Interledger network do.
+
+
 ## Previous work
 
 Out of repositories related to Interledger and Web Monetization found on Github, only a few mention payment pointers. Among this very limited set, only 3
@@ -401,7 +419,9 @@ In contrast, building on the in-depth analysis elaborated by this document, we h
 while leading to novel and viable business models.
 
 https://github.com/signalnerve/openmonetizationwallet
+
 https://github.com/Vivid-IOV-Labs/revenue-share-smart-contract
+
 https://github.com/Vivid-IOV-Labs/revenue-share-smart-contract
 
 
