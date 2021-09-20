@@ -204,19 +204,25 @@ While creating shares is straightforward, new questions appear, such as:
 
 - Should shares be always transferrable?
 - Should there be a member selection process first, allowing transfers only to current members?
-- If so, should there be a member eviction mechanism?
-- Should shares be transferrable only between members of a group or with outsiders as well?
-- How can additional shares be minted, if required?
+- If so, should there be a member eviction mechanism? Is it fair?
+- Should shares be transferrable only between members of a group or to outsiders as well?
+- How can additional shares be minted, whenever required?
 
-Not only are there no unique answers to such questions, group requirements are expected to evolve over time. Part of those answers resides
-in the implementation of shares. Current implementation of fungible tokens can be readily augmented to put arbitrary restrictions on transfers
-since such capabilities are part of the broader asset framework.
+For instance, it might be desirable for a percentage of shares to be locked on a particular payment pointer. Or it might be desirable for such
+as lock to exist only for a specified period of time. Not only are there no unique answers to such questions, group requirements are expected to
+evolve over time. Part of those answers resides in the implementation of shares. Current implementation of fungible tokens can be readily augmented
+to put arbitrary restrictions on transfers since such capabilities are part of the broader asset framework.
 
 More complex governance issues, such as membership restrictions, are commonly discussed and prototyped in the context of DAOs (Decentralized
 Autonomous Organizations, groups governed on a blockchain network). However, DAOs are usually much broader in scope and much more abstract regarding the aspects
 they are set to manage. In contrast, this project is well-scoped to the context of revenue sharing and governance issues specific to that matter.
 Hence, the many resources already existing in the space of DAOs, such as voting mechanisms, can be readily selected and improved within the specific
 requirements of the project.
+
+While envisioning such concerns is essential for imagining a solution that can scale to many use cases, it is just as essential prioritizing common
+requirements, straightforward to implement, and gradually build more complex governance features as additive and optional steps. Inclusion cannot be
+built on the basis of implementing complex financial instruments. Quite the opposite, financial instruments must be conceived to promote fair and intuive
+behavior by design, with the clear intent of providing resiliciency and not burden.
 
 
 ## License
