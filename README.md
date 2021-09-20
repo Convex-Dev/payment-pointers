@@ -296,6 +296,75 @@ benchmarks peek at 100,000 transactions per second where a transaction represent
 by anecdotic transactions becomes negligeable.
 
 
+## Cost analysis
+
+Naturally, at least to some extent, cost is correlated with the performance profile of the system. This section builds on the previous section
+in order to provide an understanding of the cost that will be incurred on the end users, such as content creators and content consumers.
+
+From the point of view of content consumers, queries for selection process or reading any other data are virtually free of charge. As outlined in the previous
+section, queries do not require consensus and present the same kind of performance profile that content delivery networks do. Hence, they are
+effectively *"off-chain"* and do not incur any fees *"on-chain"*. Queries are a facility provided by peer operators at their discretion. For instance,
+the Convex Foundation runs a peer that serves queries completely free of charge. Furthermore, the whole technological stack is open-source and the
+Foundation encourages individuals and organizations to run their own peers however they like.
+
+However, any solution meant to scale must consider the simple fact that running a peer requires hardware, energy, effort, and knowledge. As an alternative,
+the "Business Model" section below offers a solution based on Web Monetization itself, allowing peer operators to cover expense and even generate
+revenue.
+
+From the point of view of content creators, first, the computational cost of transactions required for setting up revenue sharing can be estimated
+upfront. Hence, the monetary cost can be estimated under various assumptions using this simple formula:
+
+```
+COMPUTATIONAL_COMPLEXITY * TOKEN_PRICE * JUICE_PRICE
+```
+
+Computational complexity of a transactions is measured by the number of basic operations it involves, where the unit is called *"juice"*. Juice price is
+adjusted accordingly to network congestion so that operations become more expensive when the network becomes saturated. It is expressed relatively to
+the token price. For instance, we could say at a given point that *"1 juice unit costs 4 Convex Coins"*. Ultimately, the token is expressed in USD
+per billion coins and is itself subject to market speculation.
+
+Under such complex relationships, it is vital to demonstrate that any fees incurred are negligeable even under worst case scenarios projected on
+those parameters.
+
+Two canonical examples are detailed:
+
+- Share creation using the current fungible token implementation, one time fees occuring when revenue sharing is bootstrapped for a stream
+- Share transfer, recurring to some extent, albeit not expected to happen often
+
+Their computation complexity has been exactly computed using the [Convex Lisp Runner](https://github.com/Convex-Dev/convex.cljc/tree/main/project/run)
+without any further optimization:
+
+```
+Share creation = 156.020 juice units
+Share transfer =   3,195 juice units
+
+```
+
+Two scenarios are modeled, mimicking common networks as of today (2021/09/20).
+
+Scenario 1 mimicks the Polkadot network under moderate congestion:
+
+```
+Share creation = 156,020 * 24.78 / 1e9 * 4 ~= 0.015  USD
+Share transfer =   3,195 * 24.78 / 1e9 * 4 ~= 0.0003 USD
+```
+
+Scenario 2 mimicks the Ethereum network under particularly high congestion:
+
+```
+Share creation = 156,020 * 3,096.26 / 1e9 * 50 = 9.66 USD
+Share transfer =   3.195 * 3.096.26 / 1e9 * 50 = 0.2  USD
+```
+
+Under foreseen projections, sporadic transaction costs incurred on payment receivers when setting up and managing revenue sharing is negligeable. As a matter
+of fact, sharing can be highly granular. For instance, creating a dedicated revenue sharing even for a single news article becomes interesting unless the consumer base is
+exceptionnally small. As a comparison, [Coil](https://coil.com) currently streams payments at a rate of 0.36 USD per hour.
+
+Even when projecting the absolute worst case scenario, which in reality has no legitimate basis to be predicted, transaction fees remain acceptable. For instance, setting
+up a revenue stream for a new content creator on a news platform would incur one time fees of approximately 10 USD, which is quickly recovered if that creator
+uses the indirect payment pointer on all published articles.
+
+
 ## License
 
 Copyright © 2021 Adam Helinski, the Convex Foundation, and contributors
