@@ -268,25 +268,27 @@ not an instanteneous overview.
 While creating shares is straightforward, new questions appear, such as:
 
 - Should shares be always transferrable?
+- How could additional shares be minted?
+- How could users decide to lock some shares on agreed payment pointers?
 - Should there be a member selection process first, allowing transfers only to current members?
-- If so, should there be a member eviction mechanism? Is it fair?
 - Should shares be transferrable only between members of a group or to outsiders as well?
-- How can additional shares be minted, whenever required?
 
-For instance, it might be desirable for a percentage of shares to be locked on a particular payment pointer. Or it might be desirable for such
-as lock to exist only for a specified period of time. Not only are there no unique answers to such questions, group requirements are expected to
-evolve over time. Part of those answers resides in the implementation of shares. Current implementation of fungible tokens can be readily augmented
-to put arbitrary restrictions on transfers since such capabilities are part of the broader asset framework.
+For instance, it might be desirable for a percentage of shares to be locked on a particular payment pointer, such as the wallet of a charity. Or for
+a specified period of time only. Users may want to vote for the creation of additional shares that could be locked in such a way, so that no one would
+undergo the risk of transferring personally owned shares anywhere.
 
-More complex governance issues, such as membership restrictions, are commonly discussed and prototyped in the context of DAOs (Decentralized
-Autonomous Organizations, groups governed on a blockchain network). However, DAOs are usually much broader in scope and much more abstract regarding the aspects
-they are set to manage. In contrast, this project is well-scoped to the context of revenue sharing and governance issues specific to that matter.
-Hence, the many resources already existing in the space of DAOs, such as voting mechanisms, can be readily selected and improved within the specific
-requirements of the project.
+Not only are there no unique answers to such questions, group requirements are expected to evolve over time. Part of those answers resides in the
+implementation of shares. Current implementation of fungible tokens can be readily augmented to put arbitrary restrictions on minting and transfers since
+such capabilities are part of the broader asset framework.
+
+Such governance issues are commonly discussed and prototyped in the context of DAOs (Decentralized Autonomous Organizations, groups governed on a blockchain
+network). However, DAOs are usually much broader in scope and much more abstract regarding the aspects they are set to manage. In contrast, this project is
+well-scoped to the context of revenue sharing and governance issues specific to that matter. Hence, the many resources already existing in the space of DAOs,
+such as voting mechanisms, can be readily selected and improved within the specific requirements of the project.
 
 While envisioning such concerns is essential for imagining a solution that can scale to many use cases, it is just as essential prioritizing common
 requirements, straightforward to implement, and gradually build more complex governance features as additive and optional steps. Inclusion cannot be
-built on the basis of implementing complex financial instruments. Quite the opposite, financial instruments must be conceived to promote fair and intuive
+built on the basis of implementing complex financial instruments. On the contrary, financial instruments must be conceived to promote fair and intuive
 behavior by design, with the clear intent of providing resiliciency and not burden.
 
 
@@ -318,7 +320,7 @@ benefits of a decentralized solution, as described in this document, while appro
 
 Furthermore, even in the case of transactions, the Convex technological stack introduces a series of innovations described in greater detail in the
 [White Paper](https://raw.githubusercontent.com/Convex-Dev/design/main/papers/convex-whitepaper.pdf). Due to an overall reduced computational cost, current
-benchmarks peek at 100,000 transactions per second where a transaction represents an average series of operations. Under such projections, computation induced
+benchmarks peak at 100,000 transactions per second where a transaction represents an average series of operations. Under such projections, computation induced
 by anecdotic transactions becomes negligeable.
 
 
@@ -361,7 +363,7 @@ Their computation complexity has been exactly computed using the [Convex Lisp Ru
 without any further optimization:
 
 ```
-Share creation = 156.020 juice units
+Share creation = 156,020 juice units
 Share transfer =   3,195 juice units
 ```
 
@@ -392,7 +394,7 @@ uses the indirect payment pointer on all published articles.
 
 ## Viable business model
 
-Up to this point, careful analysis was applied to study if the insigts exposed in this document where financially beneficial to users, promoted fair economic
+Up to this point, careful analysis was applied to study if the insights exposed in this document where financially beneficial to users, promoted fair economic
 relationships, and offered new ventures. Previous section about cost analysis demonstrated that cost was on average negligeable for payments receivers and hinted
 at the idea that payment senders could benefit from this system free of charge. This is because peer operators have the straightforward ability to collect tiny
 fees via Web Monetization itself.
@@ -407,6 +409,88 @@ loop as every party involved make use of Web Monetization in a self-sustaining c
 How those off-chain fees should be governed remains to be prototyped. Most likely, fees will take into account the computational cost of the selection process.
 Given that payment receivers control which peer will handle the selection process, it is likely that peers will compete in terms of quality of service and price
 just like connnector nodes from the Interledger network do.
+
+
+## Technical stack and deliverables
+
+Building on the ideas exposed in this document and on current technology, the projects aims to produce open-source software deliverables on 3 different levels.
+All aspects will be clearly documented in English, in repositories alongside code. Preferred license for those repositories is the commonly used 
+[Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0), although any other license may be chosen under grant requirements.
+
+Additionally, we aim to produce high-level content providing a clearer picture on how the technical components described below fit together. We will
+release a short series of videos highlighting key concepts and tools, both for technical and non-technical users. We would also like to use any remaining time
+to organize a webinar and host a live Q&A session.
+
+All development will be conducted in this public repository which will become a [monorepo](https://en.wikipedia.org/wiki/Monorepo). We will maintain a clear
+history of contributions, issues, and projects boards tracking progress over technical components described below. Given the projected timeline and the
+characteristics of this project, we will be able to reach out for feedback from the Web Monetization early, after a first iteration stage.
+
+
+### Web-based UI
+
+The web-based UI will allow anyone to setup and manage revenue streams as described in this document in a matter of clicks, without requiring much technical
+knowledge at all. As long as a user has the ability to place a payment pointer in a `<meta>` tag for Web Monetization, revenue sharing can be created and managed
+over that indirect payment pointer, as detailed throughout this document. There is no need for any further integration.
+
+First iteration of the UI will allow users to:
+
+- Inspect portfolio of revenue streams, owned shares, and how owned shares are staked on payment pointers 
+- Stake owned shares on chosen payments pointers
+- Transfer shares
+- Create new revenues streams
+
+As soon as this first iteration becomes mature enough, we would like to reach out to the Web Monetization community for initial feedback. Given that no particular
+integration is required, the entry barrier for testing this first prototype on the current test network will be very low.
+
+Second iteration will focus on allowing more complex form of governance, optionally. We will focus on allowing users to put desired constraints on
+share transfers, as described earlier. A concrete example would be the ability to reliably lock shares on a specific payment pointer, such as a charity
+wallet. Or do so within a specifid period of time. Such rules will be selected by merely answering a few simple questions when creating a new revenue stream.
+
+Third iteration will focus on providing a voting mechanism so that such rules can be created at any point in time. A concrete example would be the ability to
+vote for the minting of new shares that would then be staked on the payment pointer of a charity wallet. Users would have to ability to create and vote on such
+proposals.
+
+In parallel, a simple visualization tool will be developed allowing any user to inspect how shares are staked. For instance, a content consumer could
+get immediate insights regarding how fair a content platform is towards a specific content creator.
+
+Lastly, a developer section will point to the repositories of all produced technical components, such as this frontend application, with an overview
+of how those components fit together and can be deployed by independently by technical users. This is also essential for ensuring that all aspects
+can be easily peer-reviewed.
+
+Computational power required by users will be low. Overall, in terms of capabilities, this will remain a typical web-based UI written in [Re-frame](https://github.com/day8/re-frame)
+and [ReactJS](https://reactjs.org). The most intensive part will be signing transactions using [Ed25519](https://en.wikipedia.org/wiki/EdDSA) for which
+several Javascript libraries exist, meaning even mobile browser on low-end devices will be capable of performing those digital signatures.
+
+
+### Smart contracts
+
+Improvement of existing smart contracts (eg. fungible tokens) and development of new capabititlies (eg. Web Monetization integration) will be bootstrapped
+ahead of the web-based UI. After an initial phase of design stabilization, implementation will follow the same timeline as described in the web-based UI.
+Smart contracts will be divided in 2 categories, akin to how [CRQS systems](https://en.wikipedia.org/wiki/Command%E2%80%93query_separation) behave:
+
+- Transactions for governance: creating revenus streams, shares, transfers, ...
+- Queries: inspecting governance, payment pointer selection, ...
+
+Contracts will be written in Convex Lisp, an accessible language [thoroughly documented here](https://convex.world/cvm/data-types/numbers). Alongside,
+code will be extensively commented in English with the intent of making those contracts portable to other languages. Repository containing those contracts
+will provide a rationale and an overview.
+
+
+### Modified peer
+
+By default, peers of the Convex network speak a fast binary protocol over TCP. While highly efficient, this limits the set of consumers capable of directly
+interacting with the network. However, a peer can be embedded in any application which can then provide an API suitable to clients such as browsers.
+For instance, [convex.world](https://convex.world) is effectively a Clojure application embedding a peer while providing a [REST API](https://convex.world/tools/rest-api),
+allowing any browser to arbitrarily query and transact over the network.
+
+Similarly, for the purpose of this project, we will produce a backend application embedding a peer and hosting a REST API organized around the smart
+contracts described in the previous section. It will act as a link between the browser and the Convex network. It will be available for anyone to run
+and we will use grant money to provide it as a service on the test network.
+
+The [convex.world repository](https://github.com/Convex-Dev/convex-web) acts as a concrete example of how such an application is built.
+
+Core utilities for running and/or embedding a peer figures in the [core Convex repository](https://github.com/Convex-Dev/convex) with a Clojure wrapper
+accessible in [this repository](https://github.com/Convex-Dev/convex.cljc/tree/main/project/net).
 
 
 ## Previous work
