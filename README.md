@@ -94,6 +94,9 @@ Code excerpts and examples are written in [Convex Lisp](https://convex.world/cvm
 [at this link](https://convex.world/cvm). However, not understanding the code excerpts should not prevent the reader from understanding
 the project.
 
+Full technical description of the Convex stack is avaiable in the
+[Convex white paper](https://raw.githubusercontent.com/Convex-Dev/design/main/papers/convex-whitepaper.pdf).
+
 
 ## Defining revenue streams
 
@@ -533,6 +536,8 @@ more generally, the financial resiliency of users.
 https://github.com/signalnerve/openmonetizationwallet
 
 https://github.com/Vivid-IOV-Labs/revenue-share-smart-contract
+
+https://github.com/sharafian/revshare-pointer
 
 
 ## License
