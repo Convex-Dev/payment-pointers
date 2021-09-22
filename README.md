@@ -67,28 +67,28 @@ capital that is necessary to strengthen relationships towards mutual benefits.
 
 It follows that any revenue sharing solution in this context should be trustless from a technological point of view so that parties involved
 have a sane basis for building trust from a human point of view. To achieve this requirement, this project aims to provide a solution based
-on blockchain technology. A series of guidelines exposed in this document aims to ensure that the solution:
+on blockchain technology. A series of guidelines exposed in this document aim to ensure that the solution:
 
 - Remains financially inclusive in spite of the speculative and volatile nature of blockchain
-- Incur predictable fees that are provably sensible in the context of Web Monetization
-- Ensure high performance since any delay in content delivery tend to reduce monetization
-- Never handle any money in any form, merely handles the payment pointer selection process
-- Do not put pressure on using a particular currency
-- Promote openness, is not meant to become a monopolistic solution
-- Promote fair revenue sharing governance by design
+- Incurs predictable fees that are provably sensible in the context of Web Monetization
+- Ensures high performance, since any delay in content delivery tend to reduce monetization
+- Never handles any money in any form, and merely handles the payment pointer selection process
+- Does not put pressure on using a particular currency
+- Promotes openness, and does not become a monopolistic solution
+- Promotes fair revenue sharing governance by design
 
 The benefits of describing revenue sharing agreements *"on chain"* is twofold. First, the state of the network is securely replicated
 world-wide in a trustless manner, meaning no party can tamper with agreements. Second, agreements are written as smart contracts which
-enforce revenue sharing rules automatically in an indisputable way. Rules, just like the possible evolution of those rules, are clearly defined
-in code the moment a revenue sharing scheme is created by members.
+enforce revenue sharing rules automatically in an indisputable way. Rules and their governance (i.e. the evolution of rules) are clearly defined
+in code in the same moment that a revenue sharing scheme is created by members.
 
 The [Convex network](https://convex.world) has been chosen as a platform of choice for this project. The following sections provide details
-as to how those guidelines will be respected and goals achieved. Details are provided regarding smart contracts that:
+as to how those guidelines will be respected and the primary goals achieved. Details are provided regarding smart contracts that:
 
 - Will be portable to other networks with similar capabilities
 - Will remain open for peer-review and reusability, with the freedom to modify them as desired
-- Will set the foundations for building a web UI ; in a matter of clicks, users will have the ability to create and manage revenue sharing
-streams without much technical abilities, computational power, or prior blockchain knowledge
+- Will set the foundations for building a web UI; in a matter of clicks, users will have the ability to create and manage revenue sharing
+streams without the need for significant technical ability, computational power, or prior blockchain knowledge
 
 Code excerpts and examples are written in [Convex Lisp](https://convex.world/cvm) which is extensively documented
 [at this link](https://convex.world/cvm). However, not understanding the code excerpts should not prevent the reader from understanding
@@ -101,7 +101,7 @@ This project defines a revenue stream as a flow of money, from payment senders t
 
 - Members own a finite supply of shares representing the stream
 - A stochastic selection process selects a payment pointer from a known list whenever a payment is streamed
-- Share owners stake their shares on payment pointers, as desired, given them weight in the selection process
+- Share owners stake their shares on payment pointers, as desired, giving them weight in the selection process
 
 Owning shares and staking them on a given payment pointer raises the chance of that payment pointer being selected as a payment receiver
 for the next payment. This document describes an implementation where:
@@ -109,7 +109,7 @@ for the next payment. This document describes an implementation where:
 - A revenue stream is effectively a payment pointer that leads itself to a selection process
 - Shares minted for that revenue stream are collaboratively managed by owners using smart contracts
 
-Payment receivers chose the granularity that suits them best. For instance, supposing a news website, revenue streams could be created at
+Payment receivers chose the granularity that suits them best. For instance, using the example of a news website, revenue streams could be created at
 different levels. Hypothetically:
 
 - Global stream for all members, when consumers browse generic pages (eg. "about" page)
@@ -120,11 +120,11 @@ different levels. Hypothetically:
 ### Creating and transferring shares
 
 Shares can be conceptualized as fungible tokens, a common notion found in many decentralized networks. Each share represents a likelihood
-of being selected as payment receiver when a payment stream is initiated in the context of a specific revenue stream. In Convex Lisp, a fungible
+of being selected as the payment receiver when a payment stream is initiated in the context of a specific revenue stream. In Convex Lisp, a fungible
 token can be created in a couple of lines.
 
 Let us suppose that Alice is the original founder. For the sake of simplicity, 100 shares are minted where each share represents a 1% chance
-of being selected as payment receiver for any given payment:
+of being selected as the payment receiver for any given payment:
 
 ```clojure
 (import convex.fungible :as fun)
@@ -134,7 +134,7 @@ of being selected as payment receiver for any given payment:
                                :supply         100})))
 ```
 
-In Convex, fungible tokens are components of a much broader asset abstraction, a common interface allowing to easily manage assets of any kind.
+In Convex, fungible tokens are components of a much broader asset abstraction, a common interface that allows for easy management of assets of any kind.
 Shares are readily transferable to new members. Supposing Bob owns account `#50` and Alice wants to transfer 40 shares:
 
 ```clojure
@@ -167,7 +167,7 @@ likely stake owned shares on a personal wallet. Nothing prevents a share owner f
 as a personal wallet as well as the wallet of a family member. This simple mechanism allows anyone to direct any percentage of revenue without
 transferring shares, as desired and for as long as required.
 
-A materialized view must be maintained to represent how shares are distributed by owners, mappings of payment pointers to accumulated shares:
+A materialized view must be maintained to represent how shares are distributed by owners, mapping payment pointers to accumulated shares:
 
 ```clojure
 (def payment-pointers
@@ -185,10 +185,10 @@ However, it can be broadly conceptualized as a mapping of owner accounts to mapp
 (def stakes
      {#20 {"$wallet.com/alice" 60}
       #50 {"$wallet.com/bob"   25
-           "$wcallet.com/foo"  15}})
+           "$wallet.com/foo"  15}})
 ```
 
-Both requirements will be implemented in the scope of the fungible token implementation underlying shares.
+Both requirements will be implemented in the scope of the fungible token implementation underlying the shares.
 
 
 ### Stochastic selection process
@@ -198,7 +198,7 @@ randomly is straightforward given that a random number is available.
 
 Blockchains are designed to be fully deterministic since different machines must compute transactions in the exact same way, resulting in the exact
 same result. This is why a typical `rand` function, so common in programming languages, is not provided. Solutions usually combine
-different information available on-chain which are considered difficult to predict, hence acting as a sufficient source of randomness.
+different information source available on-chain which are considered difficult to predict, hence acting as a sufficient source of randomness.
 
 On Convex, following parameters can be chosen and mixed, especially under the assumption that the selection process does not require a particularly
 strong random value:
@@ -210,7 +210,7 @@ strong random value:
 - Number of accounts
 - Number of scheduled transactions
 
-Since it is effectively payment senders that will ultimately query for payment pointers, inducing the selection process, share owners have no practical
+Since it is effectively payment senders that will ultimately query for payment pointers and induce the selection process, share owners have no practical
 way of biasing the random number generation in a particular direction. Additionally, an off-chain parameter can be provided externally when querying
 for the next payment pointer, although this idea requires some careful considerations.
 
@@ -251,8 +251,8 @@ leading to another selection process, and so on.
 
 This property is highly desirable. It provides share owners the ability to set up their own additional selection process without requiring permission
 from anyone else. For instance, as a founder, Alice might agree to transfer 50% of total shares to a pool of investors represented by an indirect
-payment pointer, in exchange for help in building her monetized platform. Alice would keep the freedom to manage her 50% of shares as desired, investors
-would keep their freedom to manage their 50% of shares as desired, without requiring any further involvement.
+payment pointer, in exchange for help in building her monetized platform. Alice would keep the freedom to manage her 50% of shares as desired, and investors
+would keep their freedom to manage their 50% of shares as desired, without requiring any further involvement from Alice.
 
 While elegant and resilient, this kind of recursive pattern has a practical performance cost. Resolving any additional payment pointer is effectively
 an extra HTTP indirection, adding latency, causing exclusive content to be delayed, and ultimately driving monetization down.
@@ -272,8 +272,8 @@ other account, leading to another selection round completely independent from Al
 additional services, everything happens in one query without changing environments, which is bound to be much faster.
 
 This significant gain in performance allows imagining arbitrarily complex chains of royalties. It promotes fair revenue sharing where monetized content
-can redirect part of revenue to other monetized content it is built on (eg. `news platform members` -> `news article author` -> `photographer's picture`).
-Naturally, this is an optimization users may choose to leverage or not, keeping the freedom of choosing any other redirection method.
+can redirect part of its revenue to other related monetized content that it may have built on in some way (e.g. `news platform members` -> `news article author` -> `photographer's picture`).
+Naturally, this is an optimization that users may choose to leverage or not, keeping the freedom of choosing any other redirection method.
 
 
 ## Privacy and transparency
@@ -283,13 +283,13 @@ Previous sections outlined the fact that a payment receiver, in order to take pa
 - An account number for receiving and exchanging shares
 - How shares are staked on payment pointers of choice by that account number
 
-Payment pointers have been designed to provide a reasonable level of privacy, They are effectively considered public. Accounts on the Convex network
+Payment pointers have been designed to provide a reasonable level of privacy but they are effectively considered public. Accounts on the Convex network
 lean towards anonymity since, unlike in other decentralized networks, they are not strictly bound to a key pair. If the owner of an account is supposedly
 uncovered, replacing the public key associated with that account is enough to cast doubt upon who really owns that particular account. Naturally, when
 Bob provides an account number to Alice in order to receive shares, Alice might rightfully deduce that Bob is the owner of that account. In reality,
-this is not necessarily true and if it is, will not necessarily hold true in the future.
+this is not necessarily true and even if it is, it will not necessarily hold true in the future.
 
-Given those statements, given that in any other form of arrangement Bob would have most likely divulge more information to Alice anyways, this project
+Given those statements, and given that in any other form of arrangement Bob would have most likely need to divulge more information to Alice anyway, we believe that this project
 respects the privacy boundaries promoted by Interledger. However, the fact that share allocations are effectively public deserves more thought.
 
 While under some circumstances it might not be desirable to publicly disclose which accounts own shares and how they are staked, it is arguably desirable
@@ -304,7 +304,7 @@ not an instantaneous overview.
 
 ## Viability
 
-Following subsections inspect the viability of the project and whether a fair and sustainable business model can stem concepts outlined
+The following subsections inspect the viability of the project and whether a fair and sustainable business model can stem from the concepts outlined
 previously.
 
 
@@ -319,7 +319,7 @@ When discussing the performance of any system, a distinction is often made betwe
 - Read operations which usually bear a low computational cost
 - Write operations which usually bear a much higher computational cost
 
-Similarly, on the Convex network and comparables networks, a distinction must be made between:
+Similarly, on the Convex network and comparable networks, a distinction must be made between:
 
 - Queries which access data and compute a result, akin to read operations
 - Transactions which produce and affect a result by altering network state, akin to write operations
@@ -337,7 +337,7 @@ benefits of a decentralized solution, as described in this document, while appro
 Furthermore, even in the case of transactions, the Convex technological stack introduces a series of innovations described in greater detail in the
 [White Paper](https://raw.githubusercontent.com/Convex-Dev/design/main/papers/convex-whitepaper.pdf). Due to an overall reduced computational cost, current
 benchmarks peak at 100,000 transactions per second where a transaction represents an average series of operations. Under such projections, computation induced
-by anecdotic transactions becomes negligible.
+by transactions becomes negligible.
 
 
 ### Cost analysis
@@ -363,20 +363,19 @@ upfront. Then, the monetary cost can be estimated under various assumptions usin
 MONETARY_COST = COMPUTATIONAL_COMPLEXITY * TOKEN_PRICE * JUICE_PRICE
 ```
 
-For instance, if a transaction has a computational cost of 20,000 units, that a billion network tokens cost 10 USD, and each compute unit costs 2
+For instance, if a transaction has a computational cost of 20,000 units, and a billion network tokens cost 10 USD, and each compute unit costs 2
 network tokens:
 
 ```
 MONETARY_COST = 20,000 * 10 / 1e9 * 2 = 0.0004 USD
 ```
 Cost per compute unit varies dynamically to control network congestion and the price of the network token is subject to speculation. Under
-such complex relationships, it is vital to demonstrate that any on-chain fees incurred on the Convex network are sensible even under worst
-case scenarios projected on those parameters.
+such complex relationships, it is vital to demonstrate that any on-chain fees incurred when using the Convex network are sensible even under worst-case scenarios projected by the parameters.
 
 Two canonical examples are detailed:
 
-- Shares creation using the current fungible token implementation, one time fees occuring when a revenue stream is created
-- Shares transfer, recurring to some extent, albeit not expected to happen often
+- Creation of shares, using the current fungible token implementation where a one time fee occurs when a revenue stream is created
+- Transfer of shares, recurring to some extent, albeit not expected to happen often
 
 Computation complexity has been exactly measured using the [Convex Lisp Runner](https://github.com/Convex-Dev/convex.cljc/tree/main/project/run),
 without any further optimization:
@@ -406,7 +405,7 @@ Under foreseen projections, sporadic transaction costs incurred on payment recei
 of fact, sharing can be highly granular. For instance, creating a dedicated revenue sharing stream even for a single news article becomes interesting unless the consumer base is
 exceptionally small. As a comparison, [Coil](https://coil.com) currently streams payments at a rate of 0.36 USD per hour.
 
-Even when projecting the absolute worst case scenario, which in reality has no legitimate basis to be predicted, transaction fees remain acceptable. For instance, setting
+Even when projecting the absolute worst-case scenario, which in reality has no legitimate basis to be predicted, transaction fees remain acceptable. For instance, setting
 up a revenue stream for each content creator on a news platform would incur one time fees of approximately 10 USD each time, which is quickly recovered given
 usage of the indirect payment pointer on all published articles.
 
@@ -414,7 +413,7 @@ usage of the indirect payment pointer on all published articles.
 ### Self-sustaining ecosystem
 
 Up to this point, careful analysis was applied to study whether the insights exposed in this document were (1) financially beneficial to users, (2) promoted fair economic
-relationships, and (3) offered new ventures. The previous section about cost analysis demonstrated that cost was on average negligeable for payments receivers and hinted
+relationships, and (3) offered new ventures. The previous section about cost analysis demonstrated that cost was on average negligible for payments receivers and hinted
 at the idea that payment senders could benefit from this system free of charge. This is because peer operators have the straightforward ability to collect tiny
 fees via Web Monetization itself, capturing a negligible percentage of payments streams that, given an economy of scale, would provide continuous revenue for
 operators.
@@ -422,7 +421,7 @@ operators.
 This is fair and sensible. Indeed, a payment receiver monetizes content via an indirect payment pointer that leads to the well-described probabilistic selection process.
 From the point of view of a peer, it is the payment sender who triggers the selection process when accessing monetized content, and this incurs on the peer the tangible
 *"off-chain"* cost of running the query that performs the selection. In order to cover expenses and possibly generate additional revenue for the added value it
-provides, the peer needs to displace the financial burden received by the sender onto the receiver that benefitted from it. In other words, payment
+provides, the peer needs to displace the financial burden received by the sender onto the receiver that benefited from it. In other words, payment
 receivers must agree that a tiny but sufficient percentage of their revenue is redirected towards the payment pointer of the peer operator they rely one. This
 effectively closes the loop as every party involved makes use of Web Monetization in a self-sustaining cycle. Alternatively, although it
 would be suitable only for larger organizations, a conglomerate of payment receivers could run its own peer.
@@ -455,7 +454,7 @@ over that indirect payment pointer, as detailed throughout this document. There 
 
 The first iteration of the UI will allow users to:
 
-- Inspect portfolio of revenue streams, owned shares, and how owned shares are staked on payment pointers 
+- Inspect a portfolio of revenue streams and owned shares, including a view of how owned shares are staked on payment pointers 
 - Stake owned shares on chosen payment pointers
 - Transfer shares
 - Create new revenues streams
@@ -463,9 +462,9 @@ The first iteration of the UI will allow users to:
 As soon as this first iteration becomes mature enough, we would like to reach out to the Web Monetization community for initial feedback. Given that no particular
 integration is required, the entry barrier for testing this first prototype on the current test network will be very low.
 
-A second iteration will focus on allowing more complex forms of governance, optionally. We will focus on allowing users to put desired constraints on
+A second iteration will focus on allowing more complex forms of governance as an optional service. We will focus on allowing users to put desired constraints on
 share transfers, as described earlier. A concrete example would be the ability to reliably lock shares on a specific payment pointer, such as a charity
-wallet. Or do so within a specified period of time. Such rules will be selected by merely answering a few simple questions when creating a new revenue stream.
+wallet, or to do so within a specified period of time. Such rules will be selected by merely answering a few simple questions when creating a new revenue stream.
 
 The third iteration will focus on providing a voting mechanism so that such rules can be created at any point in time. A concrete example would be the ability to
 vote for the minting of new shares that would then be staked on the payment pointer of a charity wallet. Users would have the ability to create and vote on such
@@ -490,9 +489,9 @@ accessibility standards.
 
 ### Smart contracts
 
-Improvement of existing smart contracts (eg. current fungible token library) and development of new capabilities (eg. Web Monetization
+Improvement of existing smart contracts (e.g. current fungible token library) and development of new capabilities (eg. Web Monetization
 integration) will be bootstrapped ahead of the web-based UI. After an initial phase of design stabilization, implementation will follow the
-same timeline as described in the web-based UI. Smart contracts will be divided in 2 categories, akin to how [CRQS
+same timeline as described for the web-based UI. Smart contracts will be divided into two categories, akin to how [CRQS
 systems](https://en.wikipedia.org/wiki/Command%E2%80%93query_separation) behave:
 
 - Transactions for governance: creating revenue streams, shares, transfers, ...
@@ -528,12 +527,10 @@ Out of repositories related to Interledger and Web Monetization found on Github,
 attempted to provide utilities for managing them. However, they seem incomplete, unmaintained, and did not seem to attempt going beyond the simple probabilistic
 revenue sharing exposed in the [Web Monetization documentation](https://webmonetization.org/docs/probabilistic-rev-sharing).
 
-In contrast, building on the in-depth analysis elaborated by this document, we hope to provide novel insights strengthening the Interledger ecosystem and,
+In contrast, building on the in-depth analysis elaborated by this document, we hope to provide novel insights that strengthen the Interledger ecosystem and,
 more generally, the financial resiliency of users.
 
 https://github.com/signalnerve/openmonetizationwallet
-
-https://github.com/Vivid-IOV-Labs/revenue-share-smart-contract
 
 https://github.com/Vivid-IOV-Labs/revenue-share-smart-contract
 
