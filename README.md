@@ -380,8 +380,9 @@ Two canonical examples are detailed:
 - Creation of shares, using the current fungible token implementation where a one time fee occurs when a revenue stream is created
 - Transfer of shares, recurring to some extent, albeit not expected to happen often
 
-Computation complexity has been exactly measured using the [Convex Lisp Runner](https://github.com/Convex-Dev/convex.cljc/tree/main/project/run),
-without any further optimization:
+Computation complexity has been measured using the [Convex Lisp Runner](https://github.com/Convex-Dev/convex.cljc/tree/main/project/run).
+without any further optimization. It is important emphasizing this analysis is meant to be conservative and pessimistic. Foreseen optimizations
+regarding the implementation of shares, implemented in the context of this grant, will most likely result in cost being diminished by an order of a magnitiude.
 
 ```
 Shares creation = 156,020 compute units
